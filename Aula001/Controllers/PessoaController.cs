@@ -1,50 +1,84 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SeuProjeto.Models; // Substitua pelo namespace real
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Aula001.Controllers
+namespace SeuProjeto.Controllers // Substitua pelo namespace real
 {
     [ApiController]
     [Route("api/[controller]")]
     public class PessoaController : ControllerBase
     {
- 
-        [HttpPost]
-        [Route("calcular-imc")]
-        public IActionResult CalcularIMC([FromBody] Pessoa pessoa)
+        private static List<Pessoa> pessoas = new List<Pessoa>();
+
+        [HttpPost("adicionar")]
+        public IActionResult AdicionarPessoa([FromBody] Pessoa pessoa)
         {
-            double imc = pessoa.Peso / (pessoa.Altura * pessoa.Altura);
-            return Ok(new { IMC = imc });
+            if (pessoas.Any(p => p.Cpf == pessoa.Cpf))
+            {
+                return BadRequest("Pessoa já existente com o mesmo CPF.");
+            }
+            pessoas.Add(pessoa);
+            return Ok(pessoa);
         }
 
-        [HttpGet]
-        [Route("consulta-tabela-imc")]
-        public IActionResult ConsultaTabelaIMC(double imc)
+        [HttpPut("atualizar/{cpf}")]
+        public IActionResult AtualizarPessoa(string cpf, [FromBody] Pessoa pessoaAtualizada)
         {
-            string classificacao = GetIMCClassificacao(imc);
-            return Ok(new { IMC = imc, Classificacao = classificacao });
+            var pessoa = pessoas.FirstOrDefault(p => p.Cpf == cpf);
+            if (pessoa == null)
+            {
+                return NotFound("Pessoa não encontrada.");
+            }
+            pessoa.Nome = pessoaAtualizada.Nome;
+            pessoa.Peso = pessoaAtualizada.Peso;
+            pessoa.Altura = pessoaAtualizada.Altura;
+            return Ok(pessoa);
         }
 
-        private string GetIMCClassificacao(double imc)
+        [HttpDelete("remover/{cpf}")]
+        public IActionResult RemoverPessoa(string cpf)
         {
-            if (imc < 18.5)
-                return "Abaixo do peso";
-            else if (imc >= 18.5 && imc < 24.9)
-                return "Peso normal";
-            else if (imc >= 25 && imc < 29.9)
-                return "Sobrepeso";
-            else if (imc >= 30 && imc < 34.9)
-                return "Obesidade Grau 1";
-            else if (imc >= 35 && imc < 39.9)
-                return "Obesidade Grau 2";
-            else
-                return "Obesidade Grau 3";
+            var pessoa = pessoas.FirstOrDefault(p => p.Cpf == cpf);
+            if (pessoa == null)
+            {
+                return NotFound("Pessoa não encontrada.");
+            }
+            pessoas.Remove(pessoa);
+            return Ok();
         }
-    }
 
-    public class Pessoa
-    {
-        public string Nome { get; set; }
-        public double Peso { get; set; }
-        public double Altura { get; set; }
+        [HttpGet("todas")]
+        public IActionResult BuscarTodasPessoas()
+        {
+            return Ok(pessoas);
+        }
+
+        [HttpGet("buscar/{cpf}")]
+        public IActionResult BuscarPessoaPorCpf(string cpf)
+        {
+            var pessoa = pessoas.FirstOrDefault(p => p.Cpf == cpf);
+            if (pessoa == null)
+            {
+                return NotFound("Pessoa não encontrada.");
+            }
+            return Ok(pessoa);
+        }
+
+        [HttpGet("imc-bom")]
+        public IActionResult BuscarPessoasIMCBom()
+        {
+            var pessoasImcBom = pessoas.Where(p =>
+                p.CalcularIMC() >= 18 && p.CalcularIMC() <= 24).ToList();
+            return Ok(pessoasImcBom);
+        }
+
+        [HttpGet("buscar-por-nome")]
+        public IActionResult BuscarPessoasPorNome([FromQuery] string nome)
+        {
+            var pessoasPorNome = pessoas.Where(p =>
+                p.Nome.Contains(nome, System.StringComparison.OrdinalIgnoreCase)).ToList();
+            return Ok(pessoasPorNome);
+        }
     }
 }
-

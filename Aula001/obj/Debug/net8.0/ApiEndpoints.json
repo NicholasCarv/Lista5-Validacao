@@ -1,0 +1,107 @@
+[
+  {
+    "ContainingType": "SeuProjeto.Controllers.PessoaController",
+    "Method": "AdicionarPessoa",
+    "RelativePath": "api/Pessoa/adicionar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pessoa",
+        "Type": "SeuProjeto.Models.Pessoa",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SeuProjeto.Controllers.PessoaController",
+    "Method": "AtualizarPessoa",
+    "RelativePath": "api/Pessoa/atualizar/{cpf}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cpf",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "pessoaAtualizada",
+        "Type": "SeuProjeto.Models.Pessoa",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SeuProjeto.Controllers.PessoaController",
+    "Method": "BuscarPessoasPorNome",
+    "RelativePath": "api/Pessoa/buscar-por-nome",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nome",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SeuProjeto.Controllers.PessoaController",
+    "Method": "BuscarPessoaPorCpf",
+    "RelativePath": "api/Pessoa/buscar/{cpf}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cpf",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SeuProjeto.Controllers.PessoaController",
+    "Method": "BuscarPessoasIMCBom",
+    "RelativePath": "api/Pessoa/imc-bom",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SeuProjeto.Controllers.PessoaController",
+    "Method": "RemoverPessoa",
+    "RelativePath": "api/Pessoa/remover/{cpf}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cpf",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SeuProjeto.Controllers.PessoaController",
+    "Method": "BuscarTodasPessoas",
+    "RelativePath": "api/Pessoa/todas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
